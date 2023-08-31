@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Genos:ital,wght@0,200;0,300;0,500;1,400;1,900&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="{{ asset('expenses/style.css') }}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Genos:ital,wght@0,200;0,300;0,500;1,400;1,900&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="{{ mix('css/style.css') }}">
     <script src="{{ mix('js/app.js') }}" defer></script>
-    
 </head>
 <body>
     <div id="app">
@@ -45,8 +43,7 @@
             </ul>
         </div>
         <div class="content">
-            @{{message}}
-            @yield('content')
+            <view-router></view-router>
         </div>
     </div>
 </body>
