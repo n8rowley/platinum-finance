@@ -16,32 +16,7 @@
             <a href="#" class="logo">PLATINUM</a>
             <div class="money">$32,000</div>
         </div>
-        <div class="side-bar">
-            <ul class="menu">
-                <div class="menu-section">
-                    <li class="list-category"><a href="#">Transactions</a></li>
-                    <ul>
-                        <li>2023</li>
-                        <li>Older</li>
-                    </ul>
-                </div>
-        
-                <div class="menu-section">
-                    <li class="list-category"><a href="#">Expenses</a></li>
-                    <ul>
-                        <li><a href="#">2023</a></li>
-                        <li>Older</li>
-                    </ul>
-                </div>
-        
-                <div class="menu-section">
-                    <li class="list-category"><a href="#">Uploads</a></li>
-                </div>
-                <div class="menu-section">
-                    <li class="list-category"><a href="#">Assign Expenses</a></li>
-                </div>
-            </ul>
-        </div>
+        <side-bar></side-bar>
         <div class="content">
             <router-view></router-view>
         </div>
