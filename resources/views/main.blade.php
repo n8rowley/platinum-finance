@@ -43,7 +43,7 @@
             </ul>
         </div>
         <div class="content">
-            <view-router></view-router>
+            <router-view></router-view>
         </div>
     </div>
 </body>
