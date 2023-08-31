@@ -1,0 +1,33 @@
+$primary-color: #1E07B0;
+$secondary-color: #D5D4D5;
+$dark-color: #56494C;
+$light-color: #C0DDFF;
+$accent-color: #FB9DC1; 
+
+::selection {
+    background: $accent-color;
+    color: $dark-color;
+}
+
+a {
+    color: $secondary-color;
+
+    &:active {
+        color: $accent-color;
+    }
+}
+
+@mixin content-element {
+    padding: 1rem;
+}
+
+.stylized-button{
+    font-family: inherit; 
+    font-size: 1.1rem; 
+    border-radius: .5rem; 
+    border-width: 1px;
+    background-color: $primary-color;
+    color: $secondary-color;
+    padding: .2rem .75rem;
+    text-decoration: none;
+}

@@ -1,0 +1,46 @@
+.table-container{
+    border-radius: 1rem;
+    padding: 1rem 0;
+    background-color: $secondary-color;
+}
+
+.transactions{
+    border-radius: 1rem;
+    width: 100%;
+    font-size: 1.25rem;
+    
+    $id-length: 5%;
+    $acount-length: 15%;
+    $date-length: 15%;
+    $description-length: 40%;
+    $amount-length: 15%;
+
+    tr:nth-child(even){
+        background-color: $light-color;
+    }
+
+    th, td{
+        padding: 1rem;
+    }
+
+    td{
+        .column-id{
+            text-align: center;
+            width: $id-length;
+        }
+        .column-account{
+            width: $acount-length;
+        }
+        .column-date{
+            width: $date-length;
+        }
+        .column-description{
+            width: $description-length;
+        }
+        .column-amount{
+            width: $amount-length;
+            text-align: right;
+        }
+
+    }
+}

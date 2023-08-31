@@ -1,0 +1,16 @@
+.expense-form{
+    margin-left: 2rem;
+
+    div{
+        margin-bottom: .5rem;
+    }
+}
+
+.errorlist{
+    list-style-type: none;
+    color: var(--accent-color);
+    padding-inline-start: 0;
+    margin-top: 0;
+    margin-bottom: .25rem;
+    font-size: .85rem;
+}

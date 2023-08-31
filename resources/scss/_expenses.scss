@@ -1,0 +1,37 @@
+
+.expense-time-frame{
+    border: $primary-color solid 3px; 
+    border-radius: 1rem; 
+    display: flex; 
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.expense-header{
+    display: flex; 
+    justify-content: space-between;
+    border: $primary-color solid 2px;
+    border-radius: 1rem;
+    font-size: 2rem;
+    margin: -2px;
+    @include content-element();
+}
+
+.expense-category{
+    display:flex; 
+    justify-content: space-between; 
+    font-size: 1.5rem;
+    margin: 0 1rem; 
+    border-bottom: 1px $light-color solid;
+    @include content-element();
+}
+
+.active-month, .inactive-month{
+    @include content-element();
+    font-size: 1.5rem;
+    color: $dark-color;
+}
+
+.inactive-month{
+    color: #33333333;
+}

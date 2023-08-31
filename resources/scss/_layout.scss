@@ -1,0 +1,78 @@
+#app{
+    height: 100vh;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font-family: 'Genos', sans-serif;
+    display: grid;
+    grid-template-rows: [title] 2.5rem [body] auto; 
+    grid-template-columns: [nav] 20% [content] auto;
+}
+
+body{
+    margin: 0;
+}
+
+.title-bar{
+    background-color: $primary-color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $secondary-color;
+    padding: .5rem;
+    grid-column-start: span 2;
+}
+
+.logo{
+    font-weight: 500;
+    font-size: 2rem;
+    margin-left: .5rem;
+    text-decoration: none;
+}
+
+.money{
+    color: $accent-color;
+    font-size: 1.25rem;
+    padding: .25rem;
+    padding-right: 1rem;
+}
+
+.side-bar{
+    @include content-element();
+    background-color: $primary-color;
+    border-top: $secondary-color solid 1px;
+    align-self: stretch;
+    grid-row-start: body; 
+    grid-column-start: nav;
+}
+
+.menu{
+    padding-inline-start: 0rem;
+    color: white;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.5rem;
+    position: sticky;
+    top: 3rem;
+}
+
+.menu-section{
+    margin-bottom: .5rem;
+}
+
+.list-category{
+    list-style-type: none;
+    border-bottom: white solid 1px;
+}
+
+.list-category a {
+    text-decoration: none;
+    color: white;
+}
+
+.content{
+    overflow-y: hidden;
+    grid-row-start: body; 
+    grid-column-start: content;
+    @include content-element();
+}
