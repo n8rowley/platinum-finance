@@ -1,6 +1,32 @@
+
+$primary-color: #1E07B0;
+$secondary-color: #D5D4D5;
+$dark-color: #56494C;
+$light-color: #C0DDFF;
+$accent-color: #FB9DC1; 
+
+
+$primary: #1E07B0;
+$secondary: #D5D4D5;
+$dark: #56494C;
+$light: $light-color;
+
+$table-color: $dark;
+$table-bg: $secondary;
+$table-accent-bg: $secondary;   
+$table-hover-color: $table-color;
+$table-hover-bg-factor: .075;
+$table-hover-bg: rgba($accent-color, $table-hover-bg-factor);
+$table-border-color: $dark;
+
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/index.scss'; 
+
 @import "global";
+
 @import "layout";
 
 @import "transactions";
 @import "expenses";
 @import "uploads";
+ 

@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Genos:ital,wght@0,200;0,300;0,500;1,400;1,900&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="{{ mix('css/style.css') }}">
     <script src="{{ mix('js/app.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ mix('css/style.css') }}">
 </head>
 <body>
     <div id="app">

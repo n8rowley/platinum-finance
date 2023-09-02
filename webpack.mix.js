@@ -13,4 +13,9 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/scss/style.scss', 'public/css')
-    .vue({ version: 2 });
+    .vue({ version: 2 })
+    .version()
+    .options({
+        processCssUrls: false, // This prevents Mix from modifying URLs in your CSS
+        postCss: [require('autoprefixer')], // Add the autoprefixer PostCSS plugin
+     });
