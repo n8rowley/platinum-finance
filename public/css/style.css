@@ -11778,6 +11778,14 @@ input[type=color].form-control:disabled {
   border: solid 2px;
 }
 
+.text-lg {
+  font-size: 1.5rem;
+}
+
+.w-33 {
+  width: 33.33%;
+}
+
 ::-moz-selection {
   background: #FB9DC1;
   color: #56494C;
