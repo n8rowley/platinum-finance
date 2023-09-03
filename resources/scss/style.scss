@@ -21,9 +21,9 @@ $table-border-color: $dark;
 
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss'; 
+@import 'bootstrap-gaps';
 
 @import "global";
-
 @import "layout";
 
 @import "transactions";
