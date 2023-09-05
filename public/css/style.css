@@ -1465,21 +1465,20 @@ pre code {
 .table {
   width: 100%;
   margin-bottom: 1rem;
-  color: #56494C;
-  background-color: #D5D4D5;
+  color: #212529;
 }
 .table th,
 .table td {
   padding: 0.75rem;
   vertical-align: top;
-  border-top: 1px solid #56494C;
+  border-top: 1px solid #dee2e6;
 }
 .table thead th {
   vertical-align: bottom;
-  border-bottom: 2px solid #56494C;
+  border-bottom: 2px solid #dee2e6;
 }
 .table tbody + tbody {
-  border-top: 2px solid #56494C;
+  border-top: 2px solid #dee2e6;
 }
 
 .table-sm th,
@@ -1488,11 +1487,11 @@ pre code {
 }
 
 .table-bordered {
-  border: 1px solid #56494C;
+  border: 1px solid #dee2e6;
 }
 .table-bordered th,
 .table-bordered td {
-  border: 1px solid #56494C;
+  border: 1px solid #dee2e6;
 }
 .table-bordered thead th,
 .table-bordered thead td {
@@ -1507,12 +1506,12 @@ pre code {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #D5D4D5;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .table-hover tbody tr:hover {
-  color: #56494C;
-  background-color: rgba(251, 157, 193, 0.075);
+  color: #212529;
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
 .table-primary,
@@ -1698,15 +1697,15 @@ pre code {
 .table-active,
 .table-active > th,
 .table-active > td {
-  background-color: rgba(251, 157, 193, 0.075);
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
 .table-hover .table-active:hover {
-  background-color: rgba(250, 133, 178, 0.075);
+  background-color: rgba(0, 0, 0, 0.075);
 }
 .table-hover .table-active:hover > td,
 .table-hover .table-active:hover > th {
-  background-color: rgba(250, 133, 178, 0.075);
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
 .table .thead-dark th {
@@ -1717,7 +1716,7 @@ pre code {
 .table .thead-light th {
   color: #495057;
   background-color: #e9ecef;
-  border-color: #56494C;
+  border-color: #dee2e6;
 }
 
 .table-dark {
@@ -9371,11 +9370,11 @@ a.text-accent:hover, a.text-accent:focus {
   .table-dark td,
   .table-dark thead th,
   .table-dark tbody + tbody {
-    border-color: #56494C;
+    border-color: #dee2e6;
   }
   .table .thead-dark th {
     color: inherit;
-    border-color: #56494C;
+    border-color: #dee2e6;
   }
 }
 .bv-no-focus-ring:focus {
@@ -10939,12 +10938,12 @@ input[type=color].form-control:disabled {
 .table.b-table > tbody > .table-active,
 .table.b-table > tbody > .table-active > th,
 .table.b-table > tbody > .table-active > td {
-  background-color: rgba(251, 157, 193, 0.075);
+  background-color: rgba(0, 0, 0, 0.075);
 }
 .table.b-table.table-hover > tbody > tr.table-active:hover td,
 .table.b-table.table-hover > tbody > tr.table-active:hover th {
-  color: #56494C;
-  background-image: linear-gradient(rgba(251, 157, 193, 0.075), rgba(251, 157, 193, 0.075));
+  color: #212529;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.075), rgba(0, 0, 0, 0.075));
   background-repeat: no-repeat;
 }
 .table.b-table > tbody > .bg-active,
@@ -11015,8 +11014,8 @@ input[type=color].form-control:disabled {
   .table.b-table > thead > tr > .table-b-table-default,
   .table.b-table > tbody > tr > .table-b-table-default,
   .table.b-table > tfoot > tr > .table-b-table-default {
-    color: #56494C;
-    background-color: #D5D4D5;
+    color: #212529;
+    background-color: #fff;
   }
   .table.b-table.table-dark > thead > tr > .bg-b-table-default,
   .table.b-table.table-dark > tbody > tr > .bg-b-table-default,
@@ -11025,7 +11024,7 @@ input[type=color].form-control:disabled {
     background-color: #343a40;
   }
   .table.b-table.table-striped > tbody > tr:nth-of-type(odd) > .table-b-table-default {
-    background-image: linear-gradient(#D5D4D5, #D5D4D5);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05));
     background-repeat: no-repeat;
   }
   .table.b-table.table-striped.table-dark > tbody > tr:nth-of-type(odd) > .bg-b-table-default {
@@ -11033,8 +11032,8 @@ input[type=color].form-control:disabled {
     background-repeat: no-repeat;
   }
   .table.b-table.table-hover > tbody > tr:hover > .table-b-table-default {
-    color: #56494C;
-    background-image: linear-gradient(rgba(251, 157, 193, 0.075), rgba(251, 157, 193, 0.075));
+    color: #212529;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.075), rgba(0, 0, 0, 0.075));
     background-repeat: no-repeat;
   }
   .table.b-table.table-hover.table-dark > tbody > tr:hover > .bg-b-table-default {
@@ -12111,7 +12110,7 @@ body {
 }
 
 .content {
-  overflow-y: hidden;
+  overflow-y: auto;
   grid-row-start: body;
   grid-column-start: content;
   padding: 1rem;

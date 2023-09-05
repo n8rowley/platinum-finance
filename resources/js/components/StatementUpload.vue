@@ -1,5 +1,5 @@
 <template>
-    <div class="h-100 overflow-auto">
+    <div>
         <b-button class="mb-4" @click="addFile">Add File</b-button>
         <div v-for="(file, index) in files" :key="index" class="d-flex gap-x-4 rounded-pill border-2 border-primary py-2 px-4 mb-4">
             <b-select v-model="file.bankAccount" :options="bankOptions" class="w-25"></b-select>

@@ -65,12 +65,12 @@ export default {
 </script>
 
 <template>
-    <div class="bg-secondary rounded-lg h-100 d-flex flex-column">
-        <div class="p-2 mb-4 d-flex justify-content-end align-items-center">
+    <div>
+        <div class="p-2 mb-4 d-flex justify-content-end align-items-center bg-secondary rounded-lg">
             <div class="mr-2">Data from January - August</div>
             <b-select :value="2023" :options="[{text: 2023, value: 2023}]" class="w-25 bg-primary text-light"></b-select>
         </div>
-        <div class="p-2 overflow-auto h-100 border-top border-bottom border-white">
+        <div class="p-2 border-top border-bottom border-white">
             <h2>Income</h2>
             <b-table :items="incomeItems" :fields="fields" style="font-size: 1.5rem;" thead-class="d-none" hover @row-clicked="toggleRowDetails">
                 <template #row-details="row">
@@ -90,6 +90,6 @@ export default {
                 </template>
             </b-table>
         </div>
-        <div class="text-right p-2 mr-5" :class="[netIncome < 0 ? 'text-danger' : 'text-success']" style="font-size: 2rem;">Net: {{ formatCurrency(netIncome) }}</div>
+        <div class="text-right p-2 pr-5 bg-secondary rounded-lg" :class="[netIncome < 0 ? 'text-danger' : 'text-success']" style="font-size: 2rem;">Net: {{ formatCurrency(netIncome) }}</div>
     </div>
 </template>

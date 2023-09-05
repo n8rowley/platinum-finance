@@ -71,7 +71,7 @@ body{
 }
 
 .content{
-    overflow-y: hidden;
+    overflow-y: auto;
     grid-row-start: body; 
     grid-column-start: content;
     @include content-element();

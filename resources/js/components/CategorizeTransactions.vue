@@ -1,5 +1,5 @@
 <template>
-    <div class="h-100 overflow-auto">
+    <div>
         <div class="px-4 py-2 bg-secondary text-dark rounded-lg text-lg mb-2">
             <div class="d-flex justify-content-between align-items-center gap-x-2">
                 <div>87</div>
