@@ -2,6 +2,7 @@ import WelcomeContent from '../components/WelcomeContent';
 import MonthlyBreakdown from '../components/MonthlyBreakdown';
 import StatementUpload from '../components/StatementUpload';
 import CategorizeTransactions from '../components/CategorizeTransactions';
+import UserSettings from '../components/UserSettings';
 
 export const routes = [
     {
@@ -23,5 +24,10 @@ export const routes = [
         path: '/categorize-transactions',
         name: 'categorize-transactions',
         component: CategorizeTransactions,
-    }
+    },
+    {
+        path: '/settings',
+        name: 'settings',
+        component: UserSettings,
+    },
 ];

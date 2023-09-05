@@ -11,6 +11,10 @@ $secondary: #D5D4D5;
 $dark: #56494C;
 $light: $light-color;
 
+$theme-colors: (
+  "accent": $accent-color,
+);
+
 $table-color: $dark;
 $table-bg: $secondary;
 $table-accent-bg: $secondary;   
