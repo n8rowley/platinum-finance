@@ -14,8 +14,18 @@ return new class extends Migration
         Schema::create('bank_accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('bank');
-            $table->json('file_map')->nullable();
+            $table->boolean('enabled')->default(true);
+            $table->timestamps();
+        });
+
+        Schema::create('bank_statement_maps', function (Blueprint $table) {
+            $table->foreignId('bank_account_id')->constrained()->cascadeOnDelete();
+            $table->integer('header_lines');
+            $table->integer('date_column');
+            $table->integer('description_column');
+            $table->boolean('amount_is_split')->default(false);
+            $table->integer('amount_column');
+            $table->integer('amount_2_column')->nullable();
             $table->timestamps();
         });
 
@@ -60,6 +70,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('bank_statement_maps', function (Blueprint $table) {
+            $table->dropForeign(['bank_account_id']);
+        });
+
         Schema::table('transactions', function (Blueprint $table) {
             $table->dropForeign(['bank_account_id']);
         });
@@ -73,6 +87,7 @@ return new class extends Migration
         });
 
         Schema::dropIfExists('bank_accounts');
+        Schema::dropIfExists('bank_statement_maps');
         Schema::dropIfExists('transactions');
         Schema::dropIfExists('categories');
         Schema::dropIfExists('sub_categories');

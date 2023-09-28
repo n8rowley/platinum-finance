@@ -23,6 +23,12 @@ export default {
                 'text-white': this.active,
             }
         }
+    },
+    methods: {
+        doSave(data){
+            this.editing = false;
+            this.$emit('saved', data);
+        }
     }
 
 }
@@ -33,9 +39,9 @@ export default {
         <div class="d-flex justify-content-between align-items-center rounded-pill border border-primary flex-grow-1 px-3 py-1 cursor-pointer active-bg-tint" :class="colorLogic" @click="$emit('clicked')">
             <b-form-input v-if="editing" v-model="value.name" size="sm"></b-form-input>
             <div v-else class="px-2 py-1" style="word-break: break-all">{{ value.name }}</div>
-            <b-icon v-if="editing" icon="cloud-upload" class="ml-1" @click.stop="editing = false"></b-icon>
+            <b-icon v-if="editing" icon="cloud-upload" class="ml-1" @click.stop="doSave({name: value.name})"></b-icon>
             <b-icon v-else icon="pencil-square" @click.stop="editing = true"></b-icon>
         </div>
-        <b-form-checkbox v-model="value.enabled">Enabled</b-form-checkbox>
+        <b-form-checkbox v-model="value.enabled" @input="doSave({enabled: $event})">Enabled</b-form-checkbox>
     </div>
-</template> 
+</template>

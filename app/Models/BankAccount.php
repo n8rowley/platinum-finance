@@ -11,18 +11,25 @@ class BankAccount extends Model
 
     protected $casts = [
         'file_map' => 'object',
+        'enabled' => 'boolean',
     ];
+
+    protected $guarded = [];
+
+    protected $with = ['statementMap'];
+
+    protected $appends = ['has_statement_map'];
 
     public function transactions(){
         return $this->hasMany(Transaction::class);
     }
 
-    public function getMappableAttribute(){
-        return $this->file_map != null;
+    public function statementMap(){
+        return $this->hasOne(BankStatementMap::class);
     }
 
-    public function scopeMappable($query){
-        return $query->whereNotNull('file_map');
+    public function getHasStatementMapAttribute(){
+        return $this->statementMap()->exists();
     }
 }
 
