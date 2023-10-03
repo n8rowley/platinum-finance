@@ -11,8 +11,9 @@ class BankAccountController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->query('only_mappable')) return BankAccount::whereHasMap()->get();
         return BankAccount::all();
     }
 

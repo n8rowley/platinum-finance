@@ -31,6 +31,10 @@ class BankAccount extends Model
     public function getHasStatementMapAttribute(){
         return $this->statementMap()->exists();
     }
+
+    public function scopeWhereHasMap($query){
+        return $query->has('statementMap');
+    }
 }
 
 

@@ -2,19 +2,25 @@
 export default {
     name: "statement-upload",
     data(){return{
-        bankOptions: [
-            {text: '--Select Bank--', value: null, disabled: true},
-            {text: 'Zions', value: 1}, 
-            {text: 'Southwest', value: 2}
-        ],
+        bankOptions: [],
         files: [{bankAccount: null, file: null}],
     }},
+    created(){
+        axios({
+            method: "GET",
+            url: "/api/bankAccounts",
+            params: {
+                only_mappable: true,
+            }
+        }).then(({data})=>{
+            this.bankOptions = data;
+        })
+    },
     methods: {
         addFile() {
             this.files.push({ bankAccount: null, file: null });
         },
         upload(){
-            console.log(this.files);
             axios({
                 method: "POST",
                 url: "/api/upload-statements",
@@ -33,7 +39,11 @@ export default {
 <template>
     <div>
         <div v-for="(file, index) in files" :key="index" class="d-flex gap-x-4 rounded-pill border-2 border-primary py-2 px-4 mb-4">
-            <b-select v-model="file.bankAccount" :options="bankOptions" class="w-25"></b-select>
+            <b-select v-model="file.bankAccount" :options="bankOptions" text-field="name" value-field="id" class="w-25">
+                <template #first>
+                    <b-select-option :value="null">--Select Bank--</b-select-option>
+                </template>
+            </b-select>
             <b-form-file v-model="file.file" accept=".csv, .txt"></b-form-file>
         </div>
         <div class="d-flex justify-content-end gap-x-2">
