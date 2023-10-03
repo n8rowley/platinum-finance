@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\BankAccount;
+use App\Models\Transaction;
+use Carbon\Carbon;
 
 class ImportTransactionsController extends Controller
 {
     public function upload(Request $request)
     {
+        xdebug_break();
         // Validate the request to ensure it's a CSV file
         $request->validate([
             'files.*.bankAccount' => 'required|integer',
@@ -16,50 +20,55 @@ class ImportTransactionsController extends Controller
         // Access the uploaded files and associated bank accounts
         $uploadedFiles = $request->input('files');
     
-        $convertedFiles = [];
+        $fileImports = [];
         foreach ($uploadedFiles as $i=>$fileData) {
-            $bankAccount = $fileData['bankAccount'];
+            $bankAccount = BankAccount::find($fileData['bankAccount']);
             $file = $request->file("files.$i.file");
 
-            $convertedFiles[] = self::csvToTransactions($file, $bankAccount);
+            $fileImports[] = self::csvToTransactions($file, $bankAccount);
         }
-    
-        // Redirect or return a response
-        return response()->json($convertedFiles);
+
+        return response()->json($fileImports);
     }
     
-    private static function csvToTransactions($csvFile, $accountId){
-        // TODO: Pull configs from database
-        
-        // Chase config
-        $accountConfig = (object)['id'=>1,'name'=>'Freedom','headerLines'=>1, 'date'=>0, 'description'=>2, 'amount'=>5];
+    private static function csvToTransactions($csvFile, $account){
+        $accountMap = $account->statementMap;
 
         $handle = fopen($csvFile->path(), 'r');
 
-        foreach(range(1,$accountConfig->headerLines) as $_){
+        foreach(range(1,$accountMap->header_lines) as $_){
             fgetcsv($handle);
         }
 
-        $convertedLines = [];
-        while ($line = fgetcsv($handle)) {
-            $newTransaction = 
-            //      App\Models\Transaction::firstOrNew(
-                     [ 
-                         'account_id' => $accountConfig->id,
-                         'date' => $line[$accountConfig->date],
-                         'description' => $line[$accountConfig->description],
-                         'amount' => $line[$accountConfig->amount],
-                     ]
-            //      )
-            ;
+        $importStatistics = [
+            'account_name' => $account->name,
+            'created' => 0,
+            'total' => 0,
+        ];
 
-            $convertedLines[] = $newTransaction;
+        while ($line = fgetcsv($handle)) {
+            xdebug_break();
+            if ($accountMap->amount_is_split){
+                $parsedAmount = $line[$accountMap->amount_column] == '' ? $line[$accountMap->amount_2_column]: $line[$accountMap->amount_column];
+            }else{
+                $parsedAmount = $line[$accountMap->amount_column];
+            }
+
+            $newTransaction = Transaction::firstOrCreate([
+                'bank_account_id' => $account->id,
+                'date' => Carbon::parse($line[$accountMap->date_column]),
+                'description' => $line[$accountMap->description_column],
+                'amount' => $parsedAmount,
+            ]);
+
+            $importStatistics['total'] += 1;
+            if ($newTransaction->wasRecentlyCreated) $importStatistics['created'] += 1;
 
             //TODO: log if the transaction was found instead of created
         }
 
         fclose($handle);
 
-        return $convertedLines;
+        return $importStatistics;
     }
 }
