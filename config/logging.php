@@ -65,6 +65,13 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'duplicateTransactions' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/duplicates.log'),
+            'level' => 'notice',
+            'bubble' => false,
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\BankAccount;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -62,9 +63,16 @@ class ImportTransactionsController extends Controller
             ]);
 
             $importStatistics['total'] += 1;
-            if ($newTransaction->wasRecentlyCreated) $importStatistics['created'] += 1;
-
-            //TODO: log if the transaction was found instead of created
+            if ($newTransaction->wasRecentlyCreated) {
+                $importStatistics['created'] += 1;
+            } else {
+                Log::channel('duplicateTransactions')
+                    ->notice('Transaction marked as duplicate.',[
+                        'file_name' => $csvFile->getClientOriginalName(),
+                        'file_line'=>$line,
+                        'database_model'=>$newTransaction, 
+                    ]);
+            }
         }
 
         fclose($handle);
