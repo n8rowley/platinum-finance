@@ -10,15 +10,50 @@ use Carbon\Carbon;
 
 class ImportTransactionsController extends Controller
 {
-    public function upload(Request $request)
+    public function uploadTransactions(Request $request)
     {
-        xdebug_break();
-        // Validate the request to ensure it's a CSV file
+        $validated = $request->validate([
+            'transactions.*.bank_account_id' => 'required|exists:bank_accounts,id',
+            'transactions.*.date' => 'required|date',
+            'transactions.*.amount' => 'required|decimal:0,2',
+            'transactions.*.description' => 'required|string',
+        ]);
+
+        $importStatistics = [];
+        foreach($validated['transactions'] as $transaction){
+            $newTransaction = Transaction::firstOrCreate([
+                'bank_account_id' => $transaction['bank_account_id'],
+                'date' => Carbon::parse($transaction['date'])->format('Y-m-d'),
+                'description' => $transaction['description'],
+                'amount' => $transaction['amount'],
+            ]);
+            
+            $importStatistics[] = [
+                'account_name' => BankAccount::find($transaction['bank_account_id'])->name,
+                'total' => 1,
+                'created' => intval($newTransaction->wasRecentlyCreated),
+            ];
+
+            if (!$newTransaction->wasRecentlyCreated) {
+                Log::channel('duplicateTransactions')
+                    ->notice('Individual transaction marked as duplicate.',[
+                        'transaction_line'=>$transaction,
+                        'database_model'=>$newTransaction, 
+                    ]);
+            }
+        }
+
+        return response()->json($importStatistics);
+    }
+
+
+    public function uploadFiles(Request $request)
+    {
         $request->validate([
             'files.*.bankAccount' => 'required|integer',
             'files.*.file' => 'required|mimes:csv,txt|max:2048', // Validate as CSV or text file
         ]);
-        // Access the uploaded files and associated bank accounts
+
         $uploadedFiles = $request->input('files');
     
         $fileImports = [];
@@ -26,13 +61,15 @@ class ImportTransactionsController extends Controller
             $bankAccount = BankAccount::find($fileData['bankAccount']);
             $file = $request->file("files.$i.file");
 
-            $fileImports[] = self::csvToTransactions($file, $bankAccount);
+            $fileImports[] = self::parseCSV($file, $bankAccount);
         }
 
         return response()->json($fileImports);
     }
     
-    private static function csvToTransactions($csvFile, $account){
+
+    private static function parseCSV($csvFile, $account)
+    {
         $accountMap = $account->statementMap;
 
         $handle = fopen($csvFile->path(), 'r');
@@ -48,7 +85,6 @@ class ImportTransactionsController extends Controller
         ];
 
         while ($line = fgetcsv($handle)) {
-            xdebug_break();
             if ($accountMap->amount_is_split){
                 $parsedAmount = $line[$accountMap->amount_column] == '' ? $line[$accountMap->amount_2_column]: $line[$accountMap->amount_column];
             }else{
@@ -57,17 +93,18 @@ class ImportTransactionsController extends Controller
 
             $newTransaction = Transaction::firstOrCreate([
                 'bank_account_id' => $account->id,
-                'date' => Carbon::parse($line[$accountMap->date_column]),
+                'date' => Carbon::parse($line[$accountMap->date_column])->format('Y-m-d'),
                 'description' => $line[$accountMap->description_column],
                 'amount' => $parsedAmount,
             ]);
 
             $importStatistics['total'] += 1;
+
             if ($newTransaction->wasRecentlyCreated) {
-                $importStatistics['created'] += 1;
+                $importStatistics['created'] += $transactionsCreated;
             } else {
                 Log::channel('duplicateTransactions')
-                    ->notice('Transaction marked as duplicate.',[
+                    ->notice('Statement transaction marked as duplicate.',[
                         'file_name' => $csvFile->getClientOriginalName(),
                         'file_line'=>$line,
                         'database_model'=>$newTransaction, 

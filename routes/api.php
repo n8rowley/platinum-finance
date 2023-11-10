@@ -20,7 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/upload-statements', [ImportTransactionsController::class, 'upload'])
+Route::post('/upload-individual-transactions',[ImportTransactionsController::class, 'uploadTransactions'])
+    ->name('upload-transactions');
+
+Route::post('/upload-statements', [ImportTransactionsController::class, 'uploadFiles'])
     ->name('upload-statements');
 
 Route::apiResource('bankAccounts', BankAccountController::class);

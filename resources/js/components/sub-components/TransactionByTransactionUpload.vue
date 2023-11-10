@@ -1,5 +1,9 @@
 <script>
+    import SingleTransactionForm from './SingleTransactionForm.vue';
+
     export default {
+        name: "TransactionByTransactionUpload",
+        components: {SingleTransactionForm},
         data(){return{
             bankOptions: [
                 {text: '--Select Bank--', value: null, disabled: true},
@@ -7,22 +11,43 @@
                 {text: 'Southwest', value: 2},
                 {text: 'Amazon', value: 3},
             ],
-            form:{
+            forms:[{
                 date: null,
-                account: null,
-            },
-            dateString: null,
+                bank_account_id: null,
+                amount: null,
+                description: null,
+            }],
         }},
-        computed:{
-            rearrangedDate(){
-                if (!this.dateString) return;
-                let pieces = this.dateString.split('/');
-                return `${pieces[2]}-${pieces[0]}-${pieces[1]}`;
-            }
+        created(){
+            axios({
+                method: "GET",
+                url: "/api/bankAccounts",
+            }).then(({data})=>{
+                this.bankOptions = data;
+            })
         },
         methods:{
-            onContext(ctx){
-                this.form.date = ctx.yearYMD
+            submitForms(){
+                axios.post('api/upload-individual-transactions',{transactions: this.forms}).then(({data})=>{
+                    this.$emit('imported', data);
+                    this.forms = [{
+                        date: null,
+                        bank_account_id: null,
+                        amount: null,
+                        description: null,
+                    }];
+                });
+            },
+            addForm(){
+                this.forms.push({
+                    date: null,
+                    bankd_account_id: null,
+                    amount: null,
+                    description: null,
+                });
+            },
+            transactionInputHandler(index,data){
+                this.forms[index] = data;
             }
         },
     }
@@ -30,47 +55,13 @@
 
 <template>
     <div>
-        <div class="border-2 border-primary rounded-lg p-2 mb-4">
-            <b-form>
-                <div class="d-flex gap-x-2">
-                    <b-form-group label="Bank" class="w-33">
-                        <b-form-select :options="bankOptions" v-model="form.account"></b-form-select>
-                    </b-form-group>
-        
-                    <b-form-group label="Transaction Date" class="w-33">
-                        <b-input-group class="mb-3">
-                            <b-form-input
-                                id="example-input"
-                                v-model="dateString"
-                                type="text"
-                                placeholder="MM/DD/YYYY"
-                                autocomplete="off"
-                            ></b-form-input>
-                            <b-input-group-append>
-                                <b-form-datepicker
-                                    v-model="rearrangedDate"
-                                    button-only
-                                    right
-                                    locale="en"
-                                    aria-controls="example-input"
-                                    @context="onContext"
-                                ></b-form-datepicker>
-                            </b-input-group-append>
-                        </b-input-group>
-                    </b-form-group>
-                    <b-form-group label="Amount" class="w-33">
-                        <b-form-input type="number"></b-form-input>
-                    </b-form-group>
-                </div>
-                <b-form-group label="Description">
-                    <b-form-input></b-form-input>
-                </b-form-group>
-        
-            </b-form>
+        <div v-for="(n,index) in forms.length" :key="index" class="border-2 border-primary rounded-lg p-2 mb-4 position-relative">
+            <single-transaction-form :value="forms[index]" @input="transactionInputHandler(index,$event)" :bankOptions="bankOptions"/>
+            <b-icon v-if="index > 0" icon="x-lg" class="position-absolute" style="top: .5em; right: .5em" @click="forms.splice(index,1)"></b-icon>
         </div>
         <div class="d-flex justify-content-end gap-x-2">
-            <b-button>Add Transaction</b-button>
-            <b-button variant="primary">Submit</b-button>
+            <b-button @click="addForm">Add Transaction</b-button>
+            <b-button variant="primary" @click="submitForms">Submit</b-button>
         </div>
     </div>
 </template>
