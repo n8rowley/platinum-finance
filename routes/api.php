@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImportTransactionsController;
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +29,7 @@ Route::post('/upload-statements', [ImportTransactionsController::class, 'uploadF
     ->name('upload-statements');
 
 Route::apiResource('bankAccounts', BankAccountController::class);
+
+Route::apiResource('categories', CategoryController::class);
+
+Route::apiResource('categories.subCategories', SubCategoryController::class);
