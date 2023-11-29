@@ -84,7 +84,7 @@ class ImportTransactionsController extends Controller
             'total' => 0,
         ];
 
-        while ($line = fgetcsv($handle)) {
+        while ($line = fgetcsv($handle, escape: '')) {
             if ($accountMap->amount_is_split){
                 $parsedAmount = $line[$accountMap->amount_column] == '' ? $line[$accountMap->amount_2_column]: $line[$accountMap->amount_column];
             }else{
@@ -101,7 +101,7 @@ class ImportTransactionsController extends Controller
             $importStatistics['total'] += 1;
 
             if ($newTransaction->wasRecentlyCreated) {
-                $importStatistics['created'] += $transactionsCreated;
+                $importStatistics['created'] += 1;
             } else {
                 Log::channel('duplicateTransactions')
                     ->notice('Statement transaction marked as duplicate.',[

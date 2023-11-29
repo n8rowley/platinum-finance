@@ -13,6 +13,10 @@ class BankStatementMap extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'amount_is_split' => 'Boolean',
+    ];
+
     public function bankAccount(){
         return $this->belongsTo(BankAccount::class);
     }
