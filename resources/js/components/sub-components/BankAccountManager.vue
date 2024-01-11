@@ -103,6 +103,7 @@ export default {
                 url: "/api/bankAccounts",
                 data: payload,
             }).then(({data})=>{
+                //TODO: there's a bug here that doesn't update the id on the local copy
                 console.log('payload.id:', payload);
                 let index = this.bankAccounts.findIndex(account=>account.id == payload.id);
                 console.log('index:', index),
