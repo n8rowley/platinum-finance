@@ -14,7 +14,7 @@ class BankStatementMap extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'amount_is_split' => 'Boolean',
+        'amount_is_split' => 'boolean',
     ];
 
     public function bankAccount(){
