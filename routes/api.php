@@ -6,6 +6,8 @@ use App\Http\Controllers\ImportTransactionsController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ExpenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +35,11 @@ Route::apiResource('bankAccounts', BankAccountController::class);
 Route::apiResource('categories', CategoryController::class);
 
 Route::apiResource('categories.subCategories', SubCategoryController::class);
+
+Route::apiResource('transactions', TransactionController::class)->only([
+    'index', 'update'
+]);
+
+Route::get('/transactions/oldest', [TransactionController::class,'oldest'])->name('oldest-transaction');
+
+Route::post('/expenses/by-transaction/{transaction}',[ExpenseController::class,'storeByTransaction'])->name('store-expenses-by-transaction');

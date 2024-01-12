@@ -35,6 +35,8 @@ return new class extends Migration
             $table->foreignId('bank_account_id')->constrained();
             $table->date('date');
             $table->decimal('amount', 9, 2);
+            $table->boolean('processed')->default(false);
+            $table->boolean('duplicate')->default(false);
             $table->timestamps();
         });
 
@@ -58,10 +60,12 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table){
             $table->id();
             $table->string('description');
-            $table->date('month');
+            $table->string('month');
             $table->foreignId('sub_category_id')->constrained(table: 'sub_categories');
             $table->decimal('amount', 9, 2);
             $table->boolean('one_time')->default(false);
+            $table->foreignId('transaction_id')->constrained();
+            $table->timestamps();
         });
     }
 
@@ -84,6 +88,7 @@ return new class extends Migration
 
         Schema::table('expenses', function (Blueprint $table) {
             $table->dropForeign(['sub_category_id']);
+            $table->dropForeign(['transaction_id']);
         });
 
         Schema::dropIfExists('bank_accounts');

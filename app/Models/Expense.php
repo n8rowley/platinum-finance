@@ -9,11 +9,18 @@ class Expense extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function subCategory(){
         $this->belongsTo(SubCategory::class);
     }
 
     public function getCategoryAttribute(){ // May need to make a scope that can be queried
         return $this->subCategory->category;
+    }
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
     }
 }

@@ -1,93 +1,95 @@
 <template>
     <div>
-        <div class="px-4 py-2 bg-secondary text-dark rounded-lg text-lg mb-2">
-            <div class="d-flex justify-content-between align-items-center gap-x-2">
-                <div>87</div>
-                <div> | </div>
-                <div class="flex-grow-1">Really long description of what exactly was purchased.</div>
-                <div> | </div>
-                <div>Account</div>
-                <div> | </div>
-                <div>DATE</div>
-                <div> | </div>
-                <div>Amount</div>
+        <div v-if="oldestTransaction">
+            <div class="px-4 py-2 bg-secondary text-dark rounded-lg text-lg mb-2">
+                <div class="d-flex justify-content-between align-items-center gap-x-2" style="line-height: 1em;">
+                    <div>{{ oldestTransaction.id }}</div>
+                    <div> | </div>
+                    <div class="flex-grow-1">{{ oldestTransaction.description }}</div>
+                    <div> | </div>
+                    <div class="text-center">{{ oldestTransaction.bank_account.name }}</div>
+                    <div> | </div>
+                    <div class="text-center">{{ (new Date(oldestTransaction.date)).toLocaleDateString() }}</div>
+                    <div> | </div>
+                    <div class="text-center flex-shrink-0">$ {{ oldestTransaction.amount }}</div>
+                </div>
+            </div>
+            <CategorizeTransactrionsEntry v-for="(_,index) in form.length" v-model="form[index]" :key="`${oldestTransaction.id}-${index}`" :categories="categories" :subDivideAmount="form.length > 1"/>
+            <div class="d-flex gap-x-2">
+                <fetch-feedback ref="feedback" class="flex-grow-1"></fetch-feedback>
+                <b-button>Mark Duplicate</b-button>
+                <b-button @click="addTransaction">Split Transaction</b-button>
+                <b-button variant="primary" @click="postExpenses">Submit</b-button>
             </div>
         </div>
-        <div v-for="i in n" :key="i" class="border-2 border-secondary rounded-lg p-2 mb-4">
-            <b-form>
-                <b-form-group label="Detail">
-                    <b-form-input :value="'Really long description of what exactly was purchased.'"></b-form-input>
-                </b-form-group>
-                <div class="d-flex gap-x-2">
-                    <b-form-group label="Month" class="w-33">
-                        <b-select :options="months"></b-select>
-                    </b-form-group>
-                    <b-form-group label="Category" class="w-33">
-                        <b-select v-model="selectedCategory" :options="categories"></b-select>
-                    </b-form-group>
-                    <b-form-group label="Sub-category" class="w-33">
-                        <b-select :options="subCategoryOptions"></b-select>
-                    </b-form-group>
-                </div>
-                <b-form-checkbox>One-time transaction</b-form-checkbox>
-            </b-form>
-        </div>
-        <div class="d-flex justify-content-end gap-x-2">
-            <b-button>Skip</b-button>
-            <b-button @click="n++">Split Transaction</b-button>
-            <b-button variant="primary">Submit</b-button>
-        </div>
+        <div v-else>No un-categorized transactions</div>
     </div>
 </template>
 
 <script>
+import FetchFeedback from './sub-components/FetchFeedback.vue';
+import CategorizeTransactrionsEntry from './CategorizeTransactrionsEntry.vue';
+
 export default {
     name: "assign-categories",
+    components: { FetchFeedback, CategorizeTransactrionsEntry },
     data(){return{
-        n: 1,
-        selectedCategory: 1,
-        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        categories: [
-            {
-                text: "Income",
-                value: 1,
-                sub_categories: [
-                    {text: "Pedestal PRO", value: 1},
-                ]
-            },
-            {
-                text: "Bills",
-                value: 2,
-                sub_categories: [
-                    {text: "Mortgage", value: 2},
-                    {text: "Power", value: 3},
-                    {text: "Internet", value: 4},
-                    {text: "Utilities", value: 5},
-                ]
-            },
-            {
-                text: "Food",
-                value: 3,
-                sub_categories:[
-                    {text: "Groceries", value: 6},
-                    {text: "Eat Out", value: 7},
-                    {text: "Snacks", value: 8},
-                ]
-            },
-            {
-                text: "Car",
-                value: 4,
-                sub_categories:[
-                    {text: "Gas", value: 9},
-                    {text: "Maintenance", value: 10},
-                ]
-            }
-        ]
+        form: [],
+        oldestTransaction: null,
+        categories: [],
     }},
-    computed: {
-        subCategoryOptions(){
-            return this.categories.find((item)=>item.value == this.selectedCategory).sub_categories;
-        }
+    created(){
+        this.fetchTransaction();
+        this.fetchCategories();
+    },
+    methods: {
+        async fetchTransaction(){
+            let response = await axios.get('/api/transactions/oldest');
+            let transaction = response['data'];
+
+            this.oldestTransaction = transaction;
+            this.form = [{
+                description: transaction.description,
+                month: transaction.date,
+                sub_category_id: null,
+                amount: transaction.amount,
+                one_time: false,
+            }];
+        },
+        async fetchCategories(){
+            let response = await axios.get('/api/categories');
+            this.categories = response['data'];
+        },
+        addTransaction(){
+            this.form = [
+                ...this.form,
+                {
+                    description: null,
+                    month: this.oldestTransaction.date,
+                    sub_category_id: null,
+                    amount: 0,
+                    one_time: false,
+                },
+            ]
+        },
+        postExpenses(){
+
+            if (this.form.reduce((sum, expense)=>sum + Number(expense.amount),0) != this.oldestTransaction.amount){
+                this.$refs.feedback.error({message: "Expense amounts do not add up"});
+                return;
+            }
+
+            axios.post(`api/expenses/by-transaction/${this.oldestTransaction.id}`, {
+                expenses: this.form,
+            })
+            .then(()=>{
+                this.$refs.feedback.success({message: `Transaction processed`});
+            })
+            .then(this.fetchTransaction)
+            .catch(({response})=>{
+                this.$refs.feedback.error(response);
+            });
+        },
     }
 }
 </script>

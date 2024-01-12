@@ -11,7 +11,21 @@ class Transaction extends Model
     
     protected $guarded = [];
 
+    protected $casts = [
+        'processed' => 'boolean',
+    ];
+
     public function bankAccount(){
         return $this->belongsTo(BankAccount::class);
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    public function scopeNotProcessed($query)
+    {
+        $query->where('processed',false)->orderBy('date','asc');
     }
 }
