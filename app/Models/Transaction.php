@@ -13,6 +13,7 @@ class Transaction extends Model
 
     protected $casts = [
         'processed' => 'boolean',
+        'duplicate' => 'boolean',
     ];
 
     public function bankAccount(){

@@ -17,7 +17,7 @@
             <CategorizeTransactrionsEntry v-for="(_,index) in form.length" v-model="form[index]" :key="`${oldestTransaction.id}-${index}`" :categories="categories" :subDivideAmount="form.length > 1"/>
             <div class="d-flex gap-x-2">
                 <fetch-feedback ref="feedback" class="flex-grow-1"></fetch-feedback>
-                <b-button>Mark Duplicate</b-button>
+                <b-button @click="patchDuplicate">Mark Duplicate</b-button>
                 <b-button @click="addTransaction">Split Transaction</b-button>
                 <b-button variant="primary" @click="postExpenses">Submit</b-button>
             </div>
@@ -73,7 +73,6 @@ export default {
             ]
         },
         postExpenses(){
-
             if (this.form.reduce((sum, expense)=>sum + Number(expense.amount),0) != this.oldestTransaction.amount){
                 this.$refs.feedback.error({message: "Expense amounts do not add up"});
                 return;
@@ -90,6 +89,15 @@ export default {
                 this.$refs.feedback.error(response);
             });
         },
+        patchDuplicate(){
+            axios.patch(`/api/transactions/${this.oldestTransaction.id}`,{
+                duplicate: true,
+                processed: true,
+            }).then(this.fetchTransaction)
+            .catch(({response})=>{
+                this.$refs.feedback.error(response);
+            });
+        }
     }
 }
 </script>
