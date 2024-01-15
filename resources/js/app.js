@@ -6,6 +6,7 @@ import VueRouter from 'vue-router';
 import {routes} from './router/vue-routes';
 import SideBar from './components/SideBar';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import _ from 'lodash';
 
 // // Import Bootstrap and BootstrapVue CSS files (order is important)
 // import 'bootstrap/dist/css/bootstrap.css';

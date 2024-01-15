@@ -10,9 +10,38 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Transaction::all();
+        $query = Transaction::query();
+
+        if ($request->has('filter')){
+            foreach($request->filter as $field=>$data){
+                $type = $data['type'];
+                $value = $data['value'];
+
+                if ($type == 'exact'){
+                    $query->where($field,filter_var($value, FILTER_VALIDATE_BOOLEAN));
+                } else if ($type == 'search'){
+                    $query->whereRaw("$field LIKE '%$value%'");
+                } else if ($type == 'list') {
+                    $query->whereIn($field,$value);
+                } else if ($type == 'date-range') {
+                    $startDate = $value['start'];
+                    $endDate = $value['end'];
+
+                    if($startDate) $query->whereDate('date','>=',$value['start']);
+                    if($endDate) $query->whereDate('date','<=',$value['end']);
+                }
+            }
+        }
+
+        if ($request->filled('sortBy')) {
+            $query->orderBy($request->sortBy, filter_var($request->sortDesc, FILTER_VALIDATE_BOOLEAN) ? 'desc' : 'asc');
+        } else {
+            $query->orderBy('date');
+        }
+
+        return $query->get();
     }
 
     public function oldest()
