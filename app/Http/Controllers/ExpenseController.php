@@ -54,4 +54,38 @@ class ExpenseController extends Controller
     {
         //
     }
+
+
+    public function getGroupedExpenses(Request $request)
+    {
+        $expensesData = Expense::whereMonth('month',$request->month)
+            ->whereYear('month',$request->year)
+            ->groupedExpenseData()
+            ->get();
+
+
+        $formattedData = $expensesData->groupBy(['category_name','sub_category_name'])
+            ->map(function ($subCategories,$categoryName) use ($expensesData){
+                xdebug_break();
+                $subCategories->transform(function($expenses, $subCategoryName){
+                    $total = $expenses->sum('expense_total');
+                    return [
+                        'sub_category_total_raw' => $total,
+                        'sub_category_total' => number_format($total,2),
+                        'expenses' => $expenses,
+                    ];
+                });
+
+                $total = $subCategories->sum('sub_category_total_raw');
+                return [
+                    'category_total_raw' => $total,
+                    'category_total' => number_format($total,2),
+                    'sub_categories' => $subCategories,
+                ];
+                
+            });
+        
+        return response()->json($formattedData);
+    }
+
 }

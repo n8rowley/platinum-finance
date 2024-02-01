@@ -43,3 +43,4 @@ Route::apiResource('transactions', TransactionController::class)->only([
 Route::get('/transactions/oldest', [TransactionController::class,'oldest'])->name('oldest-transaction');
 
 Route::post('/expenses/by-transaction/{transaction}',[ExpenseController::class,'storeByTransaction'])->name('store-expenses-by-transaction');
+Route::get('/expenses/grouped-data',[ExpenseController::class, 'getGroupedExpenses'])->name('get-grouped-expenses');
