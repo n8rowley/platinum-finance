@@ -9,7 +9,7 @@
                     <div> | </div>
                     <div class="text-center">{{ oldestTransaction.bank_account.name }}</div>
                     <div> | </div>
-                    <div class="text-center">{{ (new Date(oldestTransaction.date)).toLocaleDateString() }}</div>
+                    <div class="text-center">{{ (new Date(oldestTransaction.date + "T00:00")).toLocaleDateString() }}</div>
                     <div> | </div>
                     <div class="text-center flex-shrink-0">$ {{ oldestTransaction.amount }}</div>
                 </div>
