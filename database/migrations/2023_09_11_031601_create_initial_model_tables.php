@@ -63,7 +63,6 @@ return new class extends Migration
             $table->string('month');
             $table->foreignId('sub_category_id')->constrained(table: 'sub_categories');
             $table->decimal('amount', 9, 2);
-            $table->boolean('one_time')->default(false);
             $table->foreignId('transaction_id')->constrained();
             $table->timestamps();
         });

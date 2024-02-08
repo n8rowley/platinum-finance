@@ -53,7 +53,6 @@ export default {
                 month: transaction.date,
                 sub_category_id: null,
                 amount: transaction.amount,
-                one_time: false,
             }];
         },
         async fetchCategories(){
@@ -68,7 +67,6 @@ export default {
                     month: this.oldestTransaction.date,
                     sub_category_id: null,
                     amount: 0,
-                    one_time: false,
                 },
             ]
         },

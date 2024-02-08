@@ -21,8 +21,7 @@
                 </b-select>
             </b-form-group>
         </div>
-        <div class="d-flex justify-content-between align-items-center">
-            <b-form-checkbox v-model="value.one_time">One-time expense</b-form-checkbox>
+        <div class="d-flex justify-content-end align-items-center">
             <b-form-group label="Amount" class="w-33">
                 <b-input type="number" v-model="value.amount" :disabled="!subDivideAmount"></b-input>
             </b-form-group>
