@@ -96,7 +96,6 @@ export default {
                     formatter: (raw) => {
                         let account = this.bankAccounts.find((account)=> account.id == raw );
                         if (account == undefined){
-                            console.log(`${raw} returned no bank account`);
                             return "None"
                         }
                         return account.name;
@@ -148,7 +147,6 @@ export default {
                     return f.value === null
                 }
             });
-            console.log({...ctx});
             axios.get('/api/transactions',{params: ctx})
                 .then(({data})=>{
                     callback(data)

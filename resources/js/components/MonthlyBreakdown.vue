@@ -26,7 +26,6 @@ export default {
         netIncome(){
             let black = _.reduce(this.incomeItems, (acc,item)=>acc + Number(item.category_total_raw),0);
             let red = _.reduce(this.expenseItems,(acc,item)=>acc + Number(item.category_total_raw),0);
-            console.log(black,red);
             return (black + red).toFixed(2);
         }
     },
