@@ -71,7 +71,7 @@ export default {
             ]
         },
         postExpenses(){
-            if (this.form.reduce((sum, expense)=>sum + Number(expense.amount),0) != this.oldestTransaction.amount){
+            if (this.form.reduce((sum, expense)=>sum + Number(expense.amount),0).toFixed(2) != this.oldestTransaction.amount){
                 this.$refs.feedback.error({message: "Expense amounts do not add up"});
                 return;
             }
