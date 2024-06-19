@@ -5,6 +5,8 @@ import TransactionList from '../components/TransactionList';
 import CategorizeTransactions from '../components/CategorizeTransactions';
 import UserSettings from '../components/UserSettings';
 
+import TransactionShow from '../components/transaction/show.vue';
+
 export const routes = [
     {
         path: '',
@@ -36,4 +38,10 @@ export const routes = [
         name: 'settings',
         component: UserSettings,
     },
+    {
+        path: '/transactions/:id',
+        name: 'transaction-show',
+        component: TransactionShow,
+        props: true,
+    }
 ];

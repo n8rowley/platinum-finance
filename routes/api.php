@@ -36,11 +36,11 @@ Route::apiResource('categories', CategoryController::class);
 
 Route::apiResource('categories.subCategories', SubCategoryController::class);
 
-Route::apiResource('transactions', TransactionController::class)->only([
-    'index', 'update'
-]);
-
 Route::get('/transactions/oldest', [TransactionController::class,'oldest'])->name('oldest-transaction');
+
+Route::apiResource('transactions', TransactionController::class)->only([
+    'index', 'update', 'show',
+]);
 
 Route::post('/expenses/by-transaction/{transaction}',[ExpenseController::class,'storeByTransaction'])->name('store-expenses-by-transaction');
 Route::get('/expenses/grouped-data',[ExpenseController::class, 'getGroupedExpenses'])->name('get-grouped-expenses');

@@ -13,7 +13,7 @@ class Expense extends Model
     protected $guarded = [];
 
     public function subCategory(){
-        $this->belongsTo(SubCategory::class);
+        return $this->belongsTo(SubCategory::class);
     }
 
     public function getCategoryAttribute(){ // May need to make a scope that can be queried

@@ -31,6 +31,9 @@
                 <TransactionFilterSearch v-model="filters.amount.value" key="transaction-amount"/>
                 {{ label }}
             </template>
+            <template #cell(description)="{item, value}">
+                <router-link :to="{name: 'transaction-show', params: {id: item.id}}" class="tw-text-blue-500">{{ value }}</router-link>
+            </template>
             <template #cell(amount)="{value}">
                 <div class="d-flex justify-content-between">
                     <div class="mr-2">$</div>

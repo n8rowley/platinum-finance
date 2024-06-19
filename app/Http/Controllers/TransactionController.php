@@ -44,6 +44,19 @@ class TransactionController extends Controller
         return $query->get();
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(Transaction $transaction)
+    {
+        return $transaction->load([
+            'bankAccount:id,name', 
+            'expenses' => [
+                'subCategory.category'
+            ]
+        ]);
+    }
+
     public function oldest()
     {
         return Transaction::with('bankAccount')->notProcessed()->first();
@@ -53,14 +66,6 @@ class TransactionController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Transaction $transaction)
     {
         //
     }

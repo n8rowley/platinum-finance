@@ -9,6 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Genos:ital,wght@0,200;0,300;0,500;1,400;1,900&display=swap" rel="stylesheet"> 
     <script src="{{ mix('js/app.js') }}" defer></script>
     <link rel="stylesheet" href="{{ mix('css/style.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          prefix: 'tw-',
+        }
+      </script>
 </head>
 <body>
     <div id="app">
